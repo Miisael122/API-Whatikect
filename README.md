@@ -17,6 +17,11 @@ Antes de relizar toda la programacion necesaria para hacer los request a la API,
 que seran necesarias para que todo funcione de manera correcta.
 
 <h3 id="1">Instalación de Node</h3>
+```ruby
+require 'redcarpet'
+markdown = Redcarpet.new("Hello World!")
+puts markdown.to_html
+```
 <h3 id="2">Crear un proyecto nuevo</h3>
 <h3 id="3">Instalar Express</h3>
 <h3 id="4">Instalar Axios</h3>
