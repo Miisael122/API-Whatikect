@@ -72,3 +72,80 @@ npm install multer
 Una vez instalado todo lo necesario solo se crea el server.js, el cual ya se encuentra dentro del repositorio en caso de querer trabajar con la misma configuracion(tambien se encuentran los archivos para hacer los llamados).
 En caso de no querer utilizar la misma configuracion del server.js y llamados que se proporcionan en el documento, puedes acceder a la documentacion de la API y realizar las propias. Documentación: https://help.whaticket.com/article/¿cómo-funciona-nuestra-api
 
+<h3 id="8">Ejemplo de front</h3>
+Este es un ejemplo basico de front para poder hacer un request con el proyecto que se tiene. El siguiente seria el html donde el usuario puede ingresar la informacion que se ocupa para el request(numero de telefono, nombre, mensaje y la imagen).
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Mensaje</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> <!-- Carga de Axios -->
+</head>
+<body>
+
+    <h2>Formulario para Enviar Mensaje</h2>
+
+    <form id="mensaje" enctype="multipart/form-data">
+        <label for="number">Número de teléfono:</label>
+        <input type="text" id="number" name="number" value="5213317461529" required><br><br>
+
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" value="Gabriel M" required><br><br>
+
+        <label for="body">Mensaje:</label>
+        <textarea id="body" name="body" required>Hola</textarea><br><br>
+
+        <label for="archivo">Adjuntar archivo:</label>
+        <input type="file" id="archivo" name="archivo" required><br><br>
+
+        <button type="submit">Enviar Mensaje</button>
+    </form>
+
+</body>
+</html>
+```
+
+Este es el js donde realizamos el llamado:
+
+```javascript
+document.getElementById('mensaje').addEventListener('submit', async function(event) {
+            event.preventDefault(); 
+            
+            // Obtén el archivo del input file
+            const archivo = document.querySelector('input[type="file"]').files[0];
+
+            // Crea el FormData
+            const formData = new FormData();
+            formData.append('number', document.getElementById('number').value); 
+            formData.append('name', document.getElementById('name').value);
+            formData.append('body', document.getElementById('body').value);
+            formData.append('archivo', archivo); 
+            
+            // Muestra los datos del FormData en consola (opcional)
+            formData.forEach((value, key) => {
+                console.log(key, value);
+            });
+
+            try {
+                // Realiza la solicitud POST con los datos
+                const response = await axios.post('http://localhost:8004/api/whatsapp/envia', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data', 
+                    }
+                });
+
+                // Si la respuesta es exitosa
+                if (response.status === 200) {
+                    alert('Mensaje enviado correctamente');
+                }
+            } catch (error) {
+                console.error('Error al enviar el mensaje:', error);
+                alert('Hubo un error al enviar el mensaje');
+            }
+        });
+```
+
+
